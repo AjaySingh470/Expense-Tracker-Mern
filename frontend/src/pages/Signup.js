@@ -3,7 +3,9 @@ import { axiosClient } from '../utils/axiosClient';
 import { toast } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 
+
 function Signup() {
+  document.title = 'SignUp'
   const navigate = useNavigate();
   const [username,setUsername] = useState("");
   const [password,setPassword] = useState("");
@@ -21,7 +23,7 @@ function Signup() {
     e.preventDefault();
     try {
       console.log( username + email )
-      const response = await axiosClient.post('/auth/signup',{
+      await axiosClient.post('/auth/signup',{
         username,
        email,
        password

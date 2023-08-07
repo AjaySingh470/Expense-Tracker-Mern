@@ -3,7 +3,7 @@ import {axiosClient} from '../utils/axiosClient';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 
-
+document.title = 'Login'
 function Login() {
   const navigate = useNavigate();
   const [email , setEmail] = useState("");

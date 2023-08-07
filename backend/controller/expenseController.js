@@ -1,5 +1,6 @@
 const expenseModel = require('../db/expenseModel');
 const userModel = require('../db/userModel');
+const sendEmailWithAttachment = require('../utils/emailSend');
 const { error, success } = require('../utils/handler');
 
 const createExpense =async (req,res)=>{
@@ -44,8 +45,8 @@ const deleteExpense = async (req,res)=>{
             const index =  user.expense_id.indexOf(expenseId);
             console.log("here " + index);
             user.expense_id.splice(index,1);
-            await user.save();
         }
+        await user.save();
        return res.send(success(201,{respo : 'Successfully Deleted' , user}));
     } catch (e) {
        return res.send(error(401,e.message))
@@ -72,9 +73,21 @@ const getCategoryExpense = async (req,res)=>{
     }
 }
 
+const emailSender = (req,res)=>{
+    try {
+        const {recipient , body} = req.body;
+        sendEmailWithAttachment(recipient,body);
+        return res.send(success(201,"Email Sent"))
+    } catch (error) {
+        return res.send(error(401,"Email Is Wrong"))
+    }
+}
+
+
 module.exports = {
     createExpense ,
     deleteExpense , 
     getCategoryExpense ,
-    getAllExpenses
+    getAllExpenses,
+    emailSender
 }

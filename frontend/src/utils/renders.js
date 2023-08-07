@@ -63,3 +63,17 @@ export const deleteExpense = async (data)=>{
         console.log(error.message)   
     }
 }
+
+export const sendEmail = async (sender , data)=>{
+        try {
+            const response = await axiosClient.post('/expenses/sendEmail',{
+                recipient : sender , 
+                body : data
+            })
+            toast.success("Email Sent");
+            return response;
+        } catch (e) {
+            console.log(e.message)
+            return e.message ;
+        }
+}

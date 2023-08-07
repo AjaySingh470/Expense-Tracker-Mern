@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Doughnut } from 'react-chartjs-2';
 import { sortCategoryWise } from '../utils/seperator';
@@ -27,7 +27,7 @@ const data = {
         'rgba(75, 192, 192, 0.4)',
         'rgba(153, 102, 255, 0.4)',
         'rgba(230, 57, 70,0.4)',
-        'rgba(29, 53, 87 , 0.4)',
+        'rgba(255, 159, 64, 0.4)',
       ],
       borderColor: [
         'rgba(255, 99, 132, 1)',

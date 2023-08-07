@@ -17,7 +17,7 @@ function Items(props) {
   return (
     <div className='flex bg-black rounded-2xl font-mont w-full p-5 flex-col smr gap-8 '>
         <div className='text-white flex  justify-between smr  '>
-        <p className='text-white font-bold text-2xl justify-between font-mont '>₹{exp.amount}</p>
+        <p className='text-white font-bold text-2xl justify-between font-mont '>₹ {exp.amount}</p>
         <p className='border-2 rounded-full text-black font-bold font-mont bg-white pl-2 pr-2 pt-0.5 pb-0.5 h-fit text-center text-sm' >{getDate()}</p>
         </div>
         <div className='grid grid-flow-col  justify-between smr  '>
