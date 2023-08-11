@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { axiosClient } from '../utils/axiosClient';
 import { toast } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
+import LoadingBar from 'react-top-loading-bar';
+import { useRef } from 'react';
 
 
 function Signup() {
@@ -10,6 +12,7 @@ function Signup() {
   const [username,setUsername] = useState("");
   const [password,setPassword] = useState("");
   const [email , setEmail] = useState("");
+  const ref = useRef(null);
 
   // pervent login again
   useEffect(()=>{
@@ -22,7 +25,7 @@ function Signup() {
   const submitForm =async (e)=>{
     e.preventDefault();
     try {
-      console.log( username + email )
+      ref.current.staticStart();
       await axiosClient.post('/auth/signup',{
         username,
        email,
@@ -30,6 +33,7 @@ function Signup() {
       });
       // console.log(response.data.message);
       toast.success("Registerd Successfully!!")
+      ref.current.complete();
       navigate("/login");
 
     } catch (error) {
@@ -41,6 +45,8 @@ function Signup() {
 
   return (
     <div className='bg-slate-800 w-screen h-screen flex flex-row '>
+            <LoadingBar color='orange' ref={ref}  ></LoadingBar>
+
       <div className='left  w-2/5  h-screen '>
         <h1 className='text-white font-thin  w-3/4 pl-10 text-7xl leading-tight relative top-1/4 left-10 whitespace-pre-wrap ' ><span className='font-medium text-yellow-500' >Expense</span><br></br>Tracker App!!</h1>
       </div>

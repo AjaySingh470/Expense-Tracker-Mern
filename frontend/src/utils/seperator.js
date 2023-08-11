@@ -12,6 +12,7 @@ export const sortCategoryWise = (expdata,categories)=>{
         total.set(expdata[items].category , tmp + expdata[items].amount)
     }
     let arr = [];
+    // eslint-disable-next-line
     for(let [key,value] of total)
     {
         arr.push(value);

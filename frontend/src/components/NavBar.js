@@ -3,11 +3,16 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 import {BsSendFill} from 'react-icons/bs'
 import { sendEmail } from '../utils/renders';
+import LoadingBar from 'react-top-loading-bar';
+import { useRef } from 'react';
+
 function NavBar(props) {
 
   const [isPressed,setIsPressed] = useState(false);
   // eslint-disable-next-line
   const [userEmail , setUserEmail] = useState('');
+  const ref = useRef(null);
+
   // eslint-disable-next-line
   const userData = props.data;
 
@@ -15,8 +20,12 @@ function NavBar(props) {
   const navigate = useNavigate();
   const logoutHandle = async ()=>{
     try {
+      ref.current.staticStart();
+
       localStorage.removeItem('User');
       toast.success("Logout Successfully!!")
+      ref.current.complete();
+
       navigate('/login');
     } catch (error) {
       console.log(error.message)
@@ -26,6 +35,8 @@ function NavBar(props) {
 
   return (
     <div>
+            <LoadingBar color='orange' ref={ref}  ></LoadingBar>
+
          <div className=' flex flex-row  justify-between w-screen h-24 bg-neutral-950' >
           <div className='left text-red-500 font-bold font-Handjet tracking-wider text-6xl top-5 left-10 relative '>
             <p className='text-white'><span className='text-yellow-500' >Expense</span> Tracker</p>  
@@ -52,7 +63,9 @@ function NavBar(props) {
               <div className={`flex flex-col  overflow-hidden ${isPressed ? 'opacity-100 mt-8 w-1/4' : 'opacity-0 ml-20 w-0 -mt-10'} justify-between transition-all duration-500  h-50 bg-blue-500  gap-3 absolute  p-3 z-40 -ml-48 rounded-xl`}  >
               <div className=' text-white absolute -inset-x-2 -inset-y-2 bg-black font-bold rounded-full w-6 pt-0.5 text-center left-0.5 top-1 cursor-pointer h-fit border-2' onClick={()=>setIsPressed(!isPressed)} ><p className='-mt-1' >x</p></div>
                   <div className='flex flex-row gap-3 justify-between ' >
-                  <input placeholder='Your Email' onChange={(e)=>setUserEmail(e.target.value)} type='email' className=' outline-none p-2 pl-4 w-full rounded-2xl'></input>
+                  <input placeholder='Your Email' onChange={(e)=>{
+                    setUserEmail(e.target.value);
+                  }} type='email' className=' outline-none p-2 pl-4 w-full rounded-2xl'></input>
                   <button onClick={()=>{
                       sendEmail(userEmail , userData)
                   }}  className=' rounded-xl w-fit  bg-neutral-800 p-3 text-2xl text-white'  ><BsSendFill></BsSendFill></button>

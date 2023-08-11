@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState , useRef} from 'react'
 import {axiosClient} from '../utils/axiosClient';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
+import LoadingBar from 'react-top-loading-bar';
+
 
 document.title = 'Login'
 function Login() {
@@ -9,6 +11,7 @@ function Login() {
   const [email , setEmail] = useState("");
   const [password , setPassword] = useState(""); 
   // const [userdata , setUserdata] = useState({});
+  const ref = useRef(null);
   
   // pervent login again
   useEffect (()=>{
@@ -22,6 +25,7 @@ function Login() {
   const submitForm =async (e)=>{
       e.preventDefault();
       try {
+        ref.current.staticStart();
         const response = await axiosClient.post('/auth/login',{
          email,
          password
@@ -35,7 +39,8 @@ function Login() {
         toast.success("Successfully Logged In !!")
         // setUserdata(response.data.message);
         localStorage.setItem('User',JSON.stringify(response.data.message));
-
+        ref.current.complete();
+        
         navigate('/');
 
       } catch (error) {
@@ -45,6 +50,7 @@ function Login() {
 
   return (
     <div className='bg-slate-800 w-screen h-screen flex flex-row '>
+      <LoadingBar color='orange' ref={ref}  ></LoadingBar>
       <div className='left  w-2/5  h-screen '>
         <h1 className='text-white font-thin  w-3/4 pl-10 text-7xl leading-tight relative top-1/4 left-10 whitespace-pre-wrap ' ><span className='font-medium text-yellow-500' >Expense</span><br></br>Tracker App!!</h1>
       </div>

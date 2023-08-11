@@ -4,9 +4,11 @@ import Items from '../components/Items';
 import { Chartss } from '../components/Chartss';
 import "react-datepicker/dist/react-datepicker.css";
 import DatePicker from "react-datepicker";
+import LoadingBar from 'react-top-loading-bar';
 // import { toast } from 'react-hot-toast';
 import { createExpense, getUserExpenses } from '../utils/renders';
 import NavBar from '../components/NavBar';
+import { useRef } from 'react';
 
 
 function Home() {
@@ -16,6 +18,9 @@ function Home() {
   const [category , setCategory] = useState("");
   const [userdata , ] = useState(JSON.parse(localStorage.getItem('User')));
   const [userexp , setUserexp] = useState([]);
+  const ref = useRef(null);
+
+
   document.title='Home'
 
   
@@ -31,7 +36,7 @@ useEffect(()=>{
   }
   // eslint-disable-next-line 
   setUserexp(Promise.resolve(getUserExpenses(userdata._id)).then((data)=>setUserexp(data)))
-  console.log(userexp)
+
 }, [userdata._id, navigate]);
 
 
@@ -47,6 +52,7 @@ const getTotal= ()=>{
   // console.log(userexp)
   return (
     <div className=' h-screen font-mont w-full  bg-zinc-900'>
+      <LoadingBar color='orange' ref={ref}  ></LoadingBar>
        <NavBar data = {userexp}></NavBar>
         {/* Feed */}
         <div className='Feed  w-4/5 left-[calc(100%-90%)] relative h-[calc(100%-6rem)] flex  ' >
@@ -97,8 +103,9 @@ const getTotal= ()=>{
                       amount 
 
                     }
-                   
+                    ref.current.staticStart();
                     createExpense(expInfo);
+                    ref.current.complete();
                   }} href="#_" className="relative h-fit text-center w-full rounded-xl px-5 py-2 overflow-hidden group bg-gray-800 border-2 hover:bg-gradient-to-r hover:from-indigo-600 hover:to-indigo-600 text-white hover:ring-2 hover:ring-offset-2 hover:ring-indigo-600 transition-all ease-out duration-300">
                 <span className="absolute right-0 w-8 h-10 -mt-12 transition-all duration-1000 transform translate-x-12 bg-white opacity-10 rotate-12 group-hover:-translate-x-40 ease"></span>
                 <span className="relative font-bold text-2xl">+</span>
